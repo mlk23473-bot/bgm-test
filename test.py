@@ -9,7 +9,7 @@ import time
 # 画面の基本設定
 st.set_page_config(page_title="USEN BGM 提案ツール", page_icon="🎵")
 
-st.title("🎵 USEN BGM AI営業提案ツール (CSVマスタ・3ch提案版)")
+st.title("🎵 USEN BGM 営業提案ツール")
 st.write("内装・業種・ターゲット等に合わせてそのお店に最適なBGMチャンネルを厳選し、お店にとってどのような効果・メリットがあるかを踏まえて提案します。")
 
 # --- APIキーの自動読み込み（Secrets対応） ---
