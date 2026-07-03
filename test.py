@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 import google.generativeai as genai
 import pandas as pd
 import os
-import time # 時間を制御する部品を追加
+import time
 
 # 画面の基本設定
 st.set_page_config(page_title="USEN BGM 提案ツール", page_icon="🎵")
@@ -12,9 +12,14 @@ st.set_page_config(page_title="USEN BGM 提案ツール", page_icon="🎵")
 st.title("🎵 USEN BGM AI営業提案ツール (CSVマスタ・3ch提案版)")
 st.write("お店のURLと1000chのCSVマスタを連動させ、最適なBGMを3つ厳選して提案します。")
 
-# サイドバーにAPIキー入力欄を設置
-st.sidebar.title("⚙️ 初期設定")
-api_key = st.sidebar.text_input("Gemini APIキー", type="password")
+# --- APIキーを自動で読み込む魔法のコード ---
+# 1. まずは裏側（Secrets）から自動で読み取りを試みる
+if "GEMINI_API_KEY" in st.secrets:
+    api_key = st.secrets["GEMINI_API_KEY"]
+else:
+    # 2. もし設定されていなければ、従来通り左側のサイドバーから手動入力させる
+    st.sidebar.title("⚙️ 初期設定")
+    api_key = st.sidebar.text_input("Gemini APIキー", type="password")
 
 # --- CSVマスタの読み込みチェック ---
 csv_file = "channels.csv"
@@ -33,7 +38,7 @@ url_input = st.text_input("お店のURL（公式HPなど）を入力してくだ
 # 分析実行ボタン
 if st.button("AIで分析してBGM(3ch)と導入メリットを提案"):
     if not api_key:
-        st.warning("※画面左側のメニューからAPIキーを入力してください。")
+        st.warning("※APIキーが読み込めませんでした。Secretsの設定またはサイドバーからの入力をご確認ください。")
     elif not url_input:
         st.warning("※URLが入力されていません。")
     else:
