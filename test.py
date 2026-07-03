@@ -9,6 +9,23 @@ import time
 # 画面の基本設定
 st.set_page_config(page_title="USEN BGM 提案ツール", page_icon="🎵")
 
+# --- 🔐 パスワード認証機能 ---
+if "APP_PASSWORD" in st.secrets:
+    if "authenticated" not in st.session_state:
+        st.session_state.authenticated = False
+
+    if not st.session_state.authenticated:
+        st.title("🔒 社内専用ツール")
+        password_input = st.text_input("合言葉（パスワード）を入力してください", type="password")
+        if st.button("ログイン"):
+            if password_input == st.secrets["APP_PASSWORD"]:
+                st.session_state.authenticated = True
+                st.rerun()
+            else:
+                st.error("パスワードが間違っています。")
+        st.stop() # 正しいパスワードが入るまで、これより下の画面や処理を一切隠す（ストップする）
+# -----------------------------
+
 st.title("🎵 USEN BGM 営業提案ツール")
 st.write("内装・業種・ターゲット等に合わせてそのお店に最適なBGMチャンネルを厳選し、お店にとってどのような効果・メリットがあるかを踏まえて提案します。")
 
@@ -39,7 +56,7 @@ if st.button("AIで分析してBGM(3ch)と導入メリットを提案"):
     elif not url_input:
         st.warning("※URLが入力されていません。")
     else:
-        with st.spinner("ウェブサイトを分析し、1000chのマスタから最適な番組と効果タグを作成中..."):
+        with st.spinner("作成中..."):
             try:
                 # 1. URL読み取り
                 headers = {'User-Agent': 'Mozilla/5.0'}
