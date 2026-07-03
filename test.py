@@ -50,7 +50,7 @@ st.sidebar.success(f"📊 チャンネルマスタを読み込みました ({len
 url_input = st.text_input("お店の情報がわかるURL（公式HPなど）を入力してください")
 
 # 分析実行ボタン
-if st.button("AIで分析してBGM(3ch)と導入メリットを提案"):
+if st.button("BGMチャンネルを提案"):
     if not api_key:
         st.warning("※APIキーが読み込めませんでした。設定をご確認ください。")
     elif not url_input:
